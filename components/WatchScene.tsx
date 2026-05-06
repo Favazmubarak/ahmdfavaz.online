@@ -26,7 +26,7 @@ export function WatchCanvas() {
       
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const radius = 200;
+      const radius = 245;
 
       // 1. Premium Rich Backdrop
       const grad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
