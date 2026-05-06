@@ -12,13 +12,14 @@ function MetallicBlock({ position }: { position: [number, number, number] }) {
   return (
     <group position={position}>
       {/* High-Precision Polished Frame */}
-      <RoundedBox args={[frameSize, frameSize, frameSize]} radius={0.045} smoothness={32}>
+      <RoundedBox args={[frameSize, frameSize, frameSize]} radius={0.04} smoothness={4}>
         <meshPhysicalMaterial 
-          color="#050505" 
-          roughness={0.05} 
-          metalness={0.9} 
+          color="#111111" 
+          roughness={0.01} 
+          metalness={1} 
           clearcoat={1}
-          clearcoatRoughness={0.02}
+          clearcoatRoughness={0}
+          envMapIntensity={2.5}
         />
       </RoundedBox>
 
@@ -30,18 +31,20 @@ function MetallicBlock({ position }: { position: [number, number, number] }) {
       ].map((pos, i) => (
         <RoundedBox 
           key={i} 
-          args={i < 2 ? [insertSize, insertSize, 0.02] : i < 4 ? [insertSize, 0.02, insertSize] : [0.02, insertSize, insertSize]} 
-          radius={0.035} 
-          smoothness={32} 
+          args={i < 2 ? [insertSize, insertSize, 0.03] : i < 4 ? [insertSize, 0.03, insertSize] : [0.03, insertSize, insertSize]} 
+          radius={0.015} 
+          smoothness={4} 
           position={pos as [number, number, number]}
         >
           <meshPhysicalMaterial 
             color="#000000" 
             metalness={1} 
-            roughness={0.0001} 
+            roughness={0} 
             reflectivity={1} 
             clearcoat={1}
-            envMapIntensity={3.5}
+            clearcoatRoughness={0}
+            envMapIntensity={6}
+            transmission={0}
           />
         </RoundedBox>
       ))}
@@ -57,10 +60,10 @@ function Cube() {
 
   useFrame((state, delta) => {
     const t = state.clock.getElapsedTime();
-    if (mesh.current) mesh.current.rotation.y += delta * 0.05;
+    if (mesh.current) mesh.current.rotation.y += delta * 0.15;
 
-    const moveInterval = 4;
-    const moveDuration = 1.0;
+    const moveInterval = 2.5;
+    const moveDuration = 0.6;
     const timeInMove = t % moveInterval;
 
     if (timeInMove < moveDuration) {
@@ -140,11 +143,11 @@ function FocusedSpotlight() {
 
 export function RubiksCube() {
   return (
-    <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-transparent">
+    <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-[#080808]">
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 70%)',
           filter: 'blur(60px)',
           transform: 'scale(1.2)',
           zIndex: 0
@@ -153,14 +156,15 @@ export function RubiksCube() {
       
       <Canvas 
         camera={{ position: [8, 8, 8], fov: 28 }} 
-        dpr={[window.devicePixelRatio, 2]} 
+        dpr={typeof window !== 'undefined' ? [Math.min(window.devicePixelRatio, 2), 2] : [1, 2]} 
         gl={{ 
           alpha: true, 
           antialias: true, 
           toneMapping: THREE.ACESFilmicToneMapping,
           powerPreference: "high-performance",
           stencil: false,
-          depth: true
+          depth: true,
+          preserveDrawingBuffer: true
         }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
@@ -181,7 +185,7 @@ export function RubiksCube() {
             blur={2} 
             far={4} 
           />
-          <Environment preset="studio" /> 
+          <Environment preset="city" intensity={1} /> 
         </Suspense>
       </Canvas>
     </div>
