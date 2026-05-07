@@ -6,12 +6,18 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, MapPin, Hexagon } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { Globe } from "@/components/ui/globe"
 
 const RubiksCube = dynamic(
   () => import("./RubiksCube").then((m) => m.RubiksCube),
   { ssr: false, loading: () => <div className="w-full h-full bg-[#080808]" /> }
 );
+
+const Moon = dynamic(
+  () => import("./Moon").then((m) => m.Moon),
+  { ssr: false, loading: () => <div className="w-full h-full bg-[#080808]" /> }
+);
+import { Canvas } from "@react-three/fiber";
+import { ShootingStarsLayer } from "./ShootingStars";
 
 function LiveClock() {
   const [time, setTime] = useState("");
@@ -68,8 +74,7 @@ export default function WatchSection() {
         className="w-full flex flex-wrap md:flex-nowrap gap-6 h-auto md:h-[500px]"
       >
 
-        {/* ── CARD 1 · Rubik's Cube (24%) ─────────────────────────── */}
-        {/* 👇 TO CHANGE WIDTH: Adjust md:w-[24%] in the className below */}
+        {/* ── CARD 1 · System Architect (23%) ─────────────────────────── */}
         <motion.div
           variants={cardVariant}
           className="w-full md:w-[23%] bg-[#080808] rounded-[30px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col justify-between p-10 group"
@@ -98,6 +103,8 @@ export default function WatchSection() {
 
           {/* Rubik's Cube — fills middle */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            {/* Scanline Effect Overlay */}
+            <div className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
             <div className="w-[105%] h-[105%] opacity-90 group-hover:opacity-100 transition-opacity duration-500">
               <RubiksCube />
             </div>
@@ -124,70 +131,38 @@ export default function WatchSection() {
           </div>
         </motion.div>
 
-        {/* ── CARD 2 · Globe (54%) ─────────────────────────────── */}
+        {/* ── CARD 2 · Moon (54%) ─────────────────────────────── */}
 <motion.div
   variants={cardVariant}
-  className="w-full md:w-[54%] bg-[#080808] rounded-[28px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col p-10 group"
+  className="w-full md:w-[54%] bg-[#080808] rounded-[28px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col p-14 group"
 >
   <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent pointer-events-none z-10" />
 
-  {/* top bar */}
-  <div className="flex justify-between items-start relative z-20">
-    <span className="text-[9px] text-[#00ffcc] font-bold tracking-[0.25em] uppercase">
-      AVAILABLE GLOBALLY
+  {/* Top Left Title */}
+  <div className="relative z-20">
+    <span className="text-[10px] text-white/40 font-bold tracking-[0.4em] uppercase mb-2 block">
+      CELESTIAL DESIGN
     </span>
-    <span className="text-[8.5px] uppercase tracking-[0.32em] font-bold text-white/15">
-      WORLDWIDE
-    </span>
-  </div>
-
-  {/* headline */}
-  <div className="relative z-20 mt-4">
-    <h3 className="text-white font-black text-4xl tracking-tighter leading-tight">
-      Adaptable across<br />time zones
+    <h3 className="text-white font-black text-5xl tracking-tighter leading-[0.9]">
+      Lunar<br />Presence
     </h3>
   </div>
 
-  {/* Center Globe & Right Side Pills */}
-  <div className="absolute inset-0 z-0 flex items-center justify-center">
-    <Globe className="translate-y-12" />
-    
-    {/* Location Pills on the Right */}
-    <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
-      {[
-        { code: "GB", name: "UK", active: false },
-        { code: "IN", name: "India", active: true },
-        { code: "US", name: "USA", active: false },
-      ].map((loc) => (
-        <div 
-          key={loc.name}
-          className={`px-4 py-2 rounded-2xl border transition-all duration-500 flex items-center gap-3 backdrop-blur-md ${
-            loc.active 
-              ? "bg-orange-500/10 border-orange-500/30 text-orange-400" 
-              : "bg-white/[0.03] border-white/[0.06] text-white/40"
-          }`}
-        >
-          <span className="text-[9px] font-bold opacity-50">{loc.code}</span>
-          <span className="text-[11px] font-bold tracking-tight">{loc.name}</span>
-        </div>
-      ))}
+  {/* Center Moon — filling the background */}
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+    <div className="w-full h-full opacity-80 group-hover:opacity-100 transition-opacity duration-700">
+      <Moon />
     </div>
   </div>
 
-  {/* bottom row */}
-  <div className="relative z-20 mt-auto flex justify-between items-end">
-    <div className="flex flex-col gap-1">
-      <span className="text-[12px] text-white/50 font-black uppercase tracking-widest">IST India</span>
-      <span className="text-[9px] text-white/15 uppercase font-bold tracking-wider">GMT +5:30</span>
-    </div>
-    
-    <div className="flex flex-col items-end gap-1">
-      <div className="flex items-center gap-2 text-white/30">
-        <MapPin size={12} />
-        <span className="text-[10px] font-bold uppercase tracking-widest">REMOTE</span>
-      </div>
-      <span className="text-[14px] text-white font-black uppercase tracking-tighter">USA</span>
-    </div>
+  {/* Bottom Right Subtitle */}
+  <div className="relative z-20 mt-auto ml-auto text-right">
+    <p className="text-white/20 text-[11px] uppercase tracking-[0.3em] font-bold mb-1">
+      PHASE TWO
+    </p>
+    <h4 className="text-white font-black text-2xl tracking-tight leading-none italic" style={{ fontFamily: "'Instrument Serif', serif" }}>
+      Reflecting excellence<br />in every detail.
+    </h4>
   </div>
 </motion.div>
         {/* ── CARD 3 · Connect (26%) ───────────────────────────────── */}
@@ -228,6 +203,13 @@ export default function WatchSection() {
                   </linearGradient>
                 </defs>
               </svg>
+            </div>
+
+            {/* Background Stars Canvas */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity duration-700">
+              <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+                <ShootingStarsLayer count={10} />
+              </Canvas>
             </div>
 
             {/* Available for work pill */}

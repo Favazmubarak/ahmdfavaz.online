@@ -2,28 +2,38 @@
 
 import React, { useRef, Suspense, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { RoundedBox, Environment, Float, OrbitControls, ContactShadows } from "@react-three/drei";
+import { RoundedBox, Environment, Float, OrbitControls, ContactShadows, Stars, Sparkles, Html } from "@react-three/drei";
 import * as THREE from "three";
 
 function MetallicBlock({ position }: { position: [number, number, number] }) {
   const frameSize = 0.58; 
   const insertSize = 0.55; 
 
+  // All sides clear metallic silver (Chrome)
+  const faceColors = [
+    "#ffffff", // Silver
+    "#ffffff", // Silver
+    "#ffffff", // Silver
+    "#ffffff", // Silver
+    "#ffffff", // Silver
+    "#ffffff"  // Silver
+  ];
+
   return (
     <group position={position}>
-      {/* High-Precision Polished Frame */}
+      {/* Polished Chrome Frame */}
       <RoundedBox args={[frameSize, frameSize, frameSize]} radius={0.04} smoothness={4}>
         <meshPhysicalMaterial 
-          color="#111111" 
-          roughness={0.01} 
+          color="#ffffff" 
+          roughness={0.05} 
           metalness={1} 
           clearcoat={1}
           clearcoatRoughness={0}
-          envMapIntensity={2.5}
+          envMapIntensity={2}
         />
       </RoundedBox>
-
-      {/* Ultra-High Finishing Mirror Faces */}
+ 
+      {/* High-End Metallic Mirror Faces */}
       {[
         [0, 0, frameSize/2], [0, 0, -frameSize/2],
         [0, frameSize/2, 0], [0, -frameSize/2, 0],
@@ -37,14 +47,13 @@ function MetallicBlock({ position }: { position: [number, number, number] }) {
           position={pos as [number, number, number]}
         >
           <meshPhysicalMaterial 
-            color="#000000" 
+            color={faceColors[i]} 
             metalness={1} 
-            roughness={0} 
+            roughness={0.05} 
             reflectivity={1} 
             clearcoat={1}
             clearcoatRoughness={0}
-            envMapIntensity={6}
-            transmission={0}
+            envMapIntensity={4}
           />
         </RoundedBox>
       ))}
@@ -60,10 +69,11 @@ function Cube() {
 
   useFrame((state, delta) => {
     const t = state.clock.getElapsedTime();
-    if (mesh.current) mesh.current.rotation.y += delta * 0.15;
+    // Faster overall rotation
+    if (mesh.current) mesh.current.rotation.y += delta * 0.3;
 
-    const moveInterval = 2.5;
-    const moveDuration = 0.6;
+    const moveInterval = 1.8; // Faster interval
+    const moveDuration = 0.4; // Faster snap
     const timeInMove = t % moveInterval;
 
     if (timeInMove < moveDuration) {
@@ -144,12 +154,12 @@ function FocusedSpotlight() {
 export function RubiksCube() {
   return (
     <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-[#080808]">
+      {/* Fixed High-Contrast Background Glow */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          transform: 'scale(1.2)',
+          background: 'radial-gradient(circle at 75% 25%, rgba(255,255,255,0.1) 0%, transparent 60%)',
+          filter: 'blur(40px)',
           zIndex: 0
         }}
       />
@@ -171,21 +181,31 @@ export function RubiksCube() {
         className="relative z-10"
         style={{ background: 'transparent' }}
       >
-        <ambientLight intensity={0.2} />
+        <ambientLight intensity={0.05} />
+        <directionalLight position={[12, 12, 12]} intensity={5} />
+        <spotLight 
+          position={[10, 15, 10]} 
+          angle={0.3} 
+          penumbra={1} 
+          intensity={800} 
+          color="#ffffff" 
+          castShadow 
+        />
+        <pointLight position={[-10, -5, -5]} intensity={1.5} color="#4444ff" />
         <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={0.5} makeDefault />
         <Suspense fallback={null}>
-          <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.4}>
+          <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
             <Cube />
           </Float>
-          <FocusedSpotlight />
+          
           <ContactShadows 
             position={[0, -2.5, 0]} 
-            opacity={0.4} 
+            opacity={0.3} 
             scale={12} 
-            blur={2} 
+            blur={2.5} 
             far={4} 
           />
-          <Environment preset="city" intensity={1} /> 
+          <Environment preset="night" intensity={0.8} /> 
         </Suspense>
       </Canvas>
     </div>
