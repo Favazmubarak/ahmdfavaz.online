@@ -138,6 +138,7 @@ export default function WatchSection() {
 >
   <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent pointer-events-none z-10" />
 
+
   {/* Top Left Title */}
   <div className="relative z-20">
     <span className="text-[10px] text-white/40 font-bold tracking-[0.4em] uppercase mb-2 block">

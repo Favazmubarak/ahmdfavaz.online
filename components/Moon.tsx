@@ -3,7 +3,7 @@
 import React, { useRef, useMemo, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
-import { Float, Sphere } from "@react-three/drei";
+import { Float, Sphere, Stars } from "@react-three/drei";
 import { ShootingStarsLayer } from "./ShootingStars";
 
 const MoonSphere = () => {
@@ -66,7 +66,8 @@ export const Moon = () => {
         gl={{ 
           antialias: true,
           alpha: true,
-          powerPreference: "high-performance"
+          powerPreference: "high-performance",
+          toneMapping: THREE.ACESFilmicToneMapping,
         }}
       >
         <React.Suspense fallback={null}>

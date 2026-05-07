@@ -4,6 +4,7 @@ import React, { useRef, Suspense, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { RoundedBox, Environment, Float, OrbitControls, ContactShadows, Stars, Sparkles, Html } from "@react-three/drei";
 import * as THREE from "three";
+import { ShootingStarsLayer } from "./ShootingStars";
 
 function MetallicBlock({ position }: { position: [number, number, number] }) {
   const frameSize = 0.58; 
@@ -205,7 +206,7 @@ export function RubiksCube() {
             blur={2.5} 
             far={4} 
           />
-          <Environment preset="night" intensity={0.8} /> 
+          <Environment preset="night" intensity={1} /> 
         </Suspense>
       </Canvas>
     </div>
