@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, MapPin, Hexagon } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { Globe } from "@/components/ui/globe"
 
 const RubiksCube = dynamic(
   () => import("./RubiksCube").then((m) => m.RubiksCube),
@@ -123,71 +124,72 @@ export default function WatchSection() {
           </div>
         </motion.div>
 
-        {/* ── CARD 2 · Detail-Driven UI (50%) ─────────────────────── */}
-        {/* 👇 TO CHANGE WIDTH: Adjust md:w-[50%] in the className below */}
-        <motion.div
-          variants={cardVariant}
-          className="w-full md:w-[60%] bg-[#080808] rounded-[28px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col justify-start p-14 group"
+        {/* ── CARD 2 · Globe (54%) ─────────────────────────────── */}
+<motion.div
+  variants={cardVariant}
+  className="w-full md:w-[54%] bg-[#080808] rounded-[28px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col p-10 group"
+>
+  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent pointer-events-none z-10" />
+
+  {/* top bar */}
+  <div className="flex justify-between items-start relative z-20">
+    <span className="text-[9px] text-[#00ffcc] font-bold tracking-[0.25em] uppercase">
+      AVAILABLE GLOBALLY
+    </span>
+    <span className="text-[8.5px] uppercase tracking-[0.32em] font-bold text-white/15">
+      WORLDWIDE
+    </span>
+  </div>
+
+  {/* headline */}
+  <div className="relative z-20 mt-4">
+    <h3 className="text-white font-black text-4xl tracking-tighter leading-tight">
+      Adaptable across<br />time zones
+    </h3>
+  </div>
+
+  {/* Center Globe & Right Side Pills */}
+  <div className="absolute inset-0 z-0 flex items-center justify-center">
+    <Globe className="translate-y-12" />
+    
+    {/* Location Pills on the Right */}
+    <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+      {[
+        { code: "GB", name: "UK", active: false },
+        { code: "IN", name: "India", active: true },
+        { code: "US", name: "USA", active: false },
+      ].map((loc) => (
+        <div 
+          key={loc.name}
+          className={`px-4 py-2 rounded-2xl border transition-all duration-500 flex items-center gap-3 backdrop-blur-md ${
+            loc.active 
+              ? "bg-orange-500/10 border-orange-500/30 text-orange-400" 
+              : "bg-white/[0.03] border-white/[0.06] text-white/40"
+          }`}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent pointer-events-none" />
+          <span className="text-[9px] font-bold opacity-50">{loc.code}</span>
+          <span className="text-[11px] font-bold tracking-tight">{loc.name}</span>
+        </div>
+      ))}
+    </div>
+  </div>
 
-          {/* top bar */}
-          <div className="flex justify-between items-start relative z-10">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center text-white/30">
-                <ArrowUpRight size={11} className="rotate-45" />
-              </div>
-              <span className="text-[8.5px] text-white/25 uppercase tracking-[0.32em] font-bold">
-                DETAIL-DRIVEN UI
-              </span>
-            </div>
-            <div className="flex items-center gap-1 text-white/18">
-              <span className="text-[8.5px] uppercase tracking-[0.32em] font-bold text-white/20">
-                PHILOSOPHY
-              </span>
-              <span className="text-[10px] text-white/20">+</span>
-            </div>
-          </div>
-
-          {/* headline */}
-          <div className="relative z-10 mt-10">
-            <h2 className="text-white font-black text-[4.5rem] tracking-[-0.04em] leading-[0.88]">
-              Interfaces
-            </h2>
-            <p
-              className="text-white/35 text-[2rem] italic font-light leading-tight mt-1"
-              style={{ fontFamily: "'Instrument Serif', serif" }}
-            >
-              you can feel.
-            </p>
-            <p className="text-white/20 text-[11px] mt-7 leading-relaxed max-w-[240px]">
-              I sweat spacing, timing, and feedback — the tiny stuff.
-            </p>
-          </div>
-
-          {/* tags + micro-interactions */}
-          <div className="relative z-10 mt-auto flex flex-col md:flex-row justify-between items-end gap-6">
-            <div className="flex flex-wrap gap-2">
-              {["Motion", "Type", "Feedback", "Craft"].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1.5 rounded-full border border-white/[0.08] text-[8px] text-white/30 uppercase tracking-[0.22em] hover:border-white/20 hover:text-white/50 transition-all duration-300 cursor-default"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <div className="text-right max-w-[170px] shrink-0">
-              <h4 className="text-white font-bold text-[12px] tracking-tight mb-1 uppercase">
-                Micro-interactions
-              </h4>
-              <p className="text-white/25 text-[10px] leading-relaxed italic">
-                Subtle movement that confirms intent — never distracting.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
+  {/* bottom row */}
+  <div className="relative z-20 mt-auto flex justify-between items-end">
+    <div className="flex flex-col gap-1">
+      <span className="text-[12px] text-white/50 font-black uppercase tracking-widest">IST India</span>
+      <span className="text-[9px] text-white/15 uppercase font-bold tracking-wider">GMT +5:30</span>
+    </div>
+    
+    <div className="flex flex-col items-end gap-1">
+      <div className="flex items-center gap-2 text-white/30">
+        <MapPin size={12} />
+        <span className="text-[10px] font-bold uppercase tracking-widest">REMOTE</span>
+      </div>
+      <span className="text-[14px] text-white font-black uppercase tracking-tighter">USA</span>
+    </div>
+  </div>
+</motion.div>
         {/* ── CARD 3 · Connect (26%) ───────────────────────────────── */}
         {/* 👇 TO CHANGE WIDTH: Adjust md:w-[23%] in the className below */}
         <motion.div
