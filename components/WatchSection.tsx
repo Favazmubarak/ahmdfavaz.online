@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, MapPin, Hexagon } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { Globe } from "./ui/globe";
 
 const RubiksCube = dynamic(
   () => import("./RubiksCube").then((m) => m.RubiksCube),
@@ -206,9 +207,12 @@ export default function WatchSection() {
               </svg>
             </div>
 
-            {/* Background Stars Canvas */}
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity duration-700">
-              <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+            {/* Background Globe Canvas */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity duration-700">
+              <div className="absolute inset-0 flex items-center justify-center translate-y-12 scale-[1.3]">
+                <Globe />
+              </div>
+              <Canvas camera={{ position: [0, 0, 10], fov: 45 }} className="absolute inset-0">
                 <ShootingStarsLayer count={10} />
               </Canvas>
             </div>
