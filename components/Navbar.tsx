@@ -40,6 +40,8 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
+    // Initialize state immediately so it doesn't get stuck on refresh
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -132,7 +134,7 @@ export function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="fixed z-[99]" 
-        style={{ top: "16px", right: "8px" }}
+        style={{ top: "20px", right: "5px" }}
       >
         <button
           onClick={() =>
@@ -159,19 +161,19 @@ export function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         style={{ x, left: "50%", fontFamily: font.fontFamily }}
-        className="fixed top-4 z-[100]"
+        className="fixed top-5 z-[100]"
       >
         <div
           className="flex items-center rounded-full"
           style={{
-            background: "rgba(16,16,16,0.75)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            padding: "6px",
-            gap: "3px",
+            background: "rgba(150,150,150,0.15)",
+            backdropFilter: "blur(2px)",
+            WebkitBackdropFilter: "blur(12px)",
+            padding: "5px",
+            gap: "2.5px",
             border: "1px solid rgba(255,255,255,0.06)",
             boxShadow:
-              "0 4px 24px rgba(0,0,0,0.4), inset 0 0.5px 0 rgba(255,255,255,0.04)",
+              "0 10px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15)",
             whiteSpace: "nowrap",
           }}
         >
@@ -189,16 +191,16 @@ export function Navbar() {
               onClick={() => setShowMore((v) => !v)}
               className="flex items-center rounded-full"
               style={{
-                padding: "6px 13px",
-                fontSize: "13.5px",
+                padding: "5px 12px",
+                fontSize: "13px",
                 fontWeight: 400,
                 letterSpacing: "-0.01em",
                 lineHeight: 1,
                 gap: "4px",
                 color: showMore
                   ? "rgba(255,255,255,0.9)"
-                  : "rgba(255,255,255,0.6)",
-                background: showMore ? "rgba(255,255,255,0.08)" : "transparent",
+                  : "rgba(255,255,255,0.65)",
+                background: showMore ? "rgba(255,255,255,0.1)" : "transparent",
                 border: "none",
                 cursor: "pointer",
                 ...font,
@@ -436,10 +438,10 @@ function NavItem({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: active ? "7px 16px" : "6px 13px",
-        fontSize: "13.5px",
-        fontWeight: active ? 600 : 400,
-        letterSpacing: active ? "-0.02em" : "-0.01em",
+        padding: active ? "8px 15px" : "10px 12px",
+        fontSize: "13px",
+        fontWeight: active ? 500 : 400,
+        letterSpacing: active ? "-0.01em" : "-0.01em",
         lineHeight: 1,
         borderRadius: "999px",
         border: "none",
@@ -468,23 +470,27 @@ function BookCallBtn({ font }: { font: React.CSSProperties }) {
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        ...font,
-        padding: "7px 16px",
-        fontSize: "13.5px",
-        fontWeight: 500,
-        letterSpacing: "-0.01em",
-        lineHeight: 1,
-        borderRadius: "999px",
-        textDecoration: "none",
-        transition: "background 0.2s, color 0.2s, border-color 0.2s",
-        color: hovered ? "#fff" : "#fff",
-        background: hovered ? "#2a2a2a" : "#1a1a1a",
-        borderColor: hovered ? "#fff" : "rgba(255,255,255,0.25)",
-        whiteSpace: "nowrap",
-        cursor: "pointer",
-        display: "inline-block",
-      }}
+    style={{
+  ...font,
+  padding: "8px 12px",
+  fontSize: "12px",
+  fontWeight: hovered ? 700 : 500,
+  letterSpacing: "-0.01em",
+  lineHeight: 1,
+  borderRadius: "999px",
+  textDecoration: "none",
+  transition: "all 0.2s",
+  color: hovered ? "#ffffff" : "rgba(255,255,255,1)",
+  background: hovered
+    ? "linear-gradient(180deg, #8A8A8A 0%, #A0845C 100%)"
+    : "rgba(255,255,255,0.1)",
+  border: "1px solid",
+  borderColor: hovered ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.08)",
+  whiteSpace: "nowrap",
+  cursor: "pointer",
+  display: "inline-block",
+  boxShadow: hovered ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
+}}
     >
       Book a Call
     </a>

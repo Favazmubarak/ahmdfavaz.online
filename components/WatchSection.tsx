@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowUpRight, MapPin, Hexagon } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -31,134 +31,279 @@ function LiveClock() {
   return <>{time} IST</>;
 }
 
-export default function WatchSection() {
+const container = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+};
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.8,
-        ease: [0.215, 0.61, 0.355, 1],
-      },
-    }),
+const cardVariant = {
+  hidden: { opacity: 0, y: 28, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.75, ease: [0.215, 0.61, 0.355, 1] },
+  },
+};
+
+export default function WatchSection() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("favazkoppath@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <section className="w-full bg-[#000000] py-24 px-8 font-sans overflow-hidden">
-      <div className="w-full relative" style={{ isolation: 'isolate' }}>
-        
-        {/* CONSOLIDATED HERO ROW */}
-        <div className="flex flex-wrap md:flex-nowrap gap-8 h-auto md:h-[600px] w-full relative z-10">
-          
-          {/* 1. LEFT CARD - PROFILE & RUBIK (30%) */}
-          <motion.div 
-            custom={1}
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants}
-            className="w-full md:w-[30%] bg-[#080808] rounded-[32px] p-[40px] flex flex-col justify-between border border-white/[0.05] hover:border-white/20 transition-colors duration-300 relative overflow-hidden group z-10"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] via-transparent to-transparent pointer-events-none" />
+    <section className="w-full bg-[#000000] py-24 px-8 font-sans">
+      {/* 👇 TO CHANGE HEIGHT: Adjust md:h-[540px] in the className below */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="visible"
+        className="w-full flex flex-wrap md:flex-nowrap gap-6 h-auto md:h-[500px]"
+      >
+
+        {/* ── CARD 1 · Rubik's Cube (24%) ─────────────────────────── */}
+        {/* 👇 TO CHANGE WIDTH: Adjust md:w-[24%] in the className below */}
+        <motion.div
+          variants={cardVariant}
+          className="w-full md:w-[23%] bg-[#080808] rounded-[30px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col justify-between p-10 group"
+        >
+          {/* subtle inner top-left glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.025] via-transparent to-transparent pointer-events-none" />
+
+          {/* name + location */}
+          <div className="relative z-10">
+            <h3 className="text-white text-[1.65rem] tracking-tighter leading-none flex items-baseline gap-1.5">
+              <span className="font-black uppercase">FAVAZ</span>
+              <span
+                className="text-white/35 italic font-light text-[1.65rem]"
+                style={{ fontFamily: "'Instrument Serif', serif" }}
+              >
+                mubarak
+              </span>
+            </h3>
+            <div className="mt-2.5 flex items-center gap-1.5 opacity-35">
+              <MapPin size={9} />
+              <p className="text-[8px] uppercase tracking-[0.22em] font-bold">
+                ERNAKULAM, IN · <LiveClock />
+              </p>
+            </div>
+          </div>
+
+          {/* Rubik's Cube — fills middle */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-[105%] h-[105%] opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+              <RubiksCube />
+            </div>
+          </div>
+
+          {/* social links */}
+          <div className="relative z-10 flex flex-col items-center gap-5">
+            <div className="w-4/5 h-px bg-white/[0.04]" />
+            <div className="flex items-center justify-center gap-7">
+              {[
+                { icon: <FaLinkedin size={18} />, href: "#" },
+                { icon: <FaGithub size={18} />, href: "#" },
+                { icon: <FaXTwitter size={17} />, href: "#" },
+              ].map((s, i) => (
+                <a
+                  key={i}
+                  href={s.href}
+                  className="text-white/25 hover:text-white/80 transition-colors duration-300"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── CARD 2 · Detail-Driven UI (50%) ─────────────────────── */}
+        {/* 👇 TO CHANGE WIDTH: Adjust md:w-[50%] in the className below */}
+        <motion.div
+          variants={cardVariant}
+          className="w-full md:w-[60%] bg-[#080808] rounded-[28px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col justify-start p-14 group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent pointer-events-none" />
+
+          {/* top bar */}
+          <div className="flex justify-between items-start relative z-10">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center text-white/30">
+                <ArrowUpRight size={11} className="rotate-45" />
+              </div>
+              <span className="text-[8.5px] text-white/25 uppercase tracking-[0.32em] font-bold">
+                DETAIL-DRIVEN UI
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-white/18">
+              <span className="text-[8.5px] uppercase tracking-[0.32em] font-bold text-white/20">
+                PHILOSOPHY
+              </span>
+              <span className="text-[10px] text-white/20">+</span>
+            </div>
+          </div>
+
+          {/* headline */}
+          <div className="relative z-10 mt-10">
+            <h2 className="text-white font-black text-[4.5rem] tracking-[-0.04em] leading-[0.88]">
+              Interfaces
+            </h2>
+            <p
+              className="text-white/35 text-[2rem] italic font-light leading-tight mt-1"
+              style={{ fontFamily: "'Instrument Serif', serif" }}
+            >
+              you can feel.
+            </p>
+            <p className="text-white/20 text-[11px] mt-7 leading-relaxed max-w-[240px]">
+              I sweat spacing, timing, and feedback — the tiny stuff.
+            </p>
+          </div>
+
+          {/* tags + micro-interactions */}
+          <div className="relative z-10 mt-auto flex flex-col md:flex-row justify-between items-end gap-6">
+            <div className="flex flex-wrap gap-2">
+              {["Motion", "Type", "Feedback", "Craft"].map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1.5 rounded-full border border-white/[0.08] text-[8px] text-white/30 uppercase tracking-[0.22em] hover:border-white/20 hover:text-white/50 transition-all duration-300 cursor-default"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="text-right max-w-[170px] shrink-0">
+              <h4 className="text-white font-bold text-[12px] tracking-tight mb-1 uppercase">
+                Micro-interactions
+              </h4>
+              <p className="text-white/25 text-[10px] leading-relaxed italic">
+                Subtle movement that confirms intent — never distracting.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── CARD 3 · Connect (26%) ───────────────────────────────── */}
+        {/* 👇 TO CHANGE WIDTH: Adjust md:w-[23%] in the className below */}
+        <motion.div
+          variants={cardVariant}
+          className="w-full md:w-[23%] bg-[#080808] rounded-[28px] border border-white/[0.06] hover:border-white/[0.14] transition-colors duration-500 relative overflow-hidden flex flex-col justify-between p-10 group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent pointer-events-none" />
+
+          {/* top row */}
+          <div className="flex justify-between items-start relative z-10">
+            {/* Custom Premium Animation Button */}
+            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-white/[0.02] to-white/[0.08] border border-white/[0.08] shadow-[inset_0_0_20px_rgba(255,255,255,0.02)] flex items-center justify-center relative group-hover:border-white/[0.2] transition-all duration-700 overflow-hidden">
+              {/* Center Glowing Dot */}
+              <div className="w-[4.5px] h-[4.5px] rounded-full bg-white z-10 shadow-[0_0_8px_rgba(255,255,255,0.8)] group-hover:scale-125 transition-transform duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]" />
+              
+              {/* Rest state U-arc */}
+              <div className="absolute w-[16px] h-[16px] rounded-full border-[1.5px] border-b-white/40 border-l-white/40 border-r-transparent border-t-transparent -rotate-45 group-hover:opacity-0 transition-opacity duration-500" />
+
+              {/* Hover state SVG drawing ring */}
+              <svg className="absolute inset-0 w-full h-full -rotate-90 opacity-0 group-hover:opacity-100 transition-opacity duration-500" viewBox="0 0 36 36">
+                <circle 
+                  cx="18" 
+                  cy="18" 
+                  r="8" 
+                  fill="none" 
+                  stroke="url(#premium-gradient)" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round"
+                  style={{ strokeDasharray: "50.3px" }}
+                  className="[stroke-dashoffset:50.3px] group-hover:[stroke-dashoffset:0px] transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+                />
+                <defs>
+                  <linearGradient id="premium-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#fff" />
+                    <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            {/* Available for work pill */}
+            <div className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.05] group-hover:bg-white/[0.08] transition-colors duration-500 flex items-center gap-2 cursor-pointer">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse group-hover:animate-[pulse_0.8s_ease-in-out_infinite]" style={{ boxShadow: "0 0 6px rgba(0,255,102,0.4)" }} />
+              <span className="text-[8px] text-white/40 group-hover:text-white/80 transition-colors duration-500 uppercase tracking-widest font-bold">
+                Available for work
+              </span>
+            </div>
+          </div>
+
+          {/* headline */}
+          <div className="relative z-10 mt-8">
+            <h2 className="text-white font-black text-[2.2rem] tracking-tight leading-[1.05] uppercase">
+              LET&apos;S BUILD<br />SOMETHING
+            </h2>
+            <p
+              className="text-white/30 text-xl italic font-light mt-1"
+              style={{ fontFamily: "'Instrument Serif', serif" }}
+            >
+              that actually works.
+            </p>
+          </div>
+
+          {/* email + CTA */}
+          <div className="relative z-10 flex flex-col gap-6 mt-auto pt-6">
+            {/* Divider Line */}
+            <div className="w-full h-px bg-white/[0.04]" />
             
-            <div className="relative z-10">
-              <h3 className="text-white text-3xl tracking-tighter leading-none mb-1 flex items-baseline gap-1.5">
-                <span className="font-bold uppercase">FAVAZ</span> 
-                <span className="text-white/40 italic font-light text-3xl" style={{ fontFamily: "'Instrument Serif', serif" }}>mubarak</span>
-              </h3>
-              <div className="mt-2.5 flex items-center gap-1.5 opacity-40">
-                <MapPin size={9} />
-                <p className="text-[8.5px] uppercase tracking-[0.2em] font-bold">
-                  ERNAKULAM, IN · <LiveClock />
-                </p>
-              </div>
-            </div>
-            
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none mt-4">
-               <div className="w-[100%] h-[100%] scale-110 opacity-90 transition-opacity group-hover:opacity-100">
-                  <RubiksCube />
-               </div>
-            </div>
-
-            <div className="relative z-10 w-full pt-8 flex flex-col items-center">
-              <div className="w-[85%] h-[1px] bg-white/[0.03] mb-6" />
-              <div className="flex items-center justify-center gap-8">
-                {[
-                  { icon: <FaLinkedin size={20} />, href: "#" },
-                  { icon: <FaGithub size={20} />, href: "#" },
-                  { icon: <FaXTwitter size={19} />, href: "#" }
-                ].map((social, i) => (
-                  <a key={i} href={social.href} className="text-white/30 hover:text-white transition-all duration-300">{social.icon}</a>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* 2. CENTER CARD - AVAILABLE GLOBALLY (50%) */}
-          <motion.div 
-            custom={2}
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants}
-            className="w-full md:w-[50%] bg-[#0d0d0d] rounded-[32px] p-[56px] flex flex-col justify-between border border-white/[0.05] hover:border-white/20 transition-colors duration-300 relative overflow-hidden group z-10"
-          >
-             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="text-white/[0.015] font-black text-[240px] select-none tracking-tighter">WORLD</span>
-             </div>
-             <div className="relative z-10">
-                <span className="text-[11px] text-teal-500 font-bold tracking-widest uppercase mb-8 block">AVAILABLE GLOBALLY</span>
-                <h3 className="text-white font-black text-5xl tracking-tighter leading-none mb-4">Adaptable across<br/>time zones</h3>
-                <p className="text-white/30 text-[13px] leading-relaxed max-w-[200px]">Working with teams worldwide from a GMT +5:30 base.</p>
-             </div>
-             <div className="relative z-10 flex gap-12 mt-auto">
-                <div className="flex flex-col"><span className="text-[14px] text-white/50 font-black uppercase tracking-widest">IST India</span><span className="text-[10px] text-white/20 uppercase">GMT +5:30</span></div>
-                <div className="flex flex-col"><span className="text-[14px] text-white/50 font-black uppercase tracking-widest">Remote</span><span className="text-[10px] text-white/20 uppercase">Worldwide</span></div>
-             </div>
-          </motion.div>
-
-          {/* 3. RIGHT CARD - CONNECT (20%) */}
-          <motion.div 
-            custom={3}
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants}
-            className="w-full md:w-[20%] bg-[#080808] rounded-[32px] p-[32px] flex flex-col justify-between border border-white/[0.05] hover:border-white/20 transition-colors duration-300 relative overflow-hidden group z-10"
-          >
-            <div className="flex justify-between items-start relative z-10">
-              <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              </div>
-              <div className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.05] flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                <span className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Available for work</span>
-              </div>
-            </div>
-
-            <div className="relative z-10 mt-12">
-               <h2 className="text-white font-bold text-4xl tracking-tight leading-none uppercase">Let&apos;s build<br/>something</h2>
-               <p className="text-white/30 text-xl italic font-light mt-1" style={{ fontFamily: "'Instrument Serif', serif" }}>that actually works.</p>
-            </div>
-
-            <div className="relative z-10 w-full pt-8 space-y-6">
-              <div className="flex flex-col items-start gap-2">
-                <div className="flex items-center gap-3 text-white/60 hover:text-white transition-colors cursor-pointer group/mail">
-                  <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover/mail:border-white/20">
-                     <ArrowUpRight size={12} className="text-white/40" />
-                  </div>
-                  <span className="text-lg font-medium tracking-tight">hello@favaz.in</span>
+            <motion.div 
+              className="flex flex-col gap-1.5 cursor-pointer group/mail w-max" 
+              onClick={handleCopy}
+              whileTap={{ scale: 0.98 }}
+              animate={copied ? { x: [0, -2, 2, -1, 1, 0] } : { x: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <div className="flex items-center gap-3 text-white/70 group-hover/mail:text-white transition-colors duration-300 relative pb-2">
+                <div className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center group-hover/mail:border-white/20 transition-colors duration-300 relative">
+                  <Hexagon size={13} className="text-white/40 group-hover/mail:text-white/70 transition-colors" />
+                  <div className="absolute w-[2.5px] h-[2.5px] bg-white/40 rounded-full group-hover/mail:bg-white/70 transition-colors" />
                 </div>
-                <span className="text-[8px] text-white/20 uppercase tracking-[0.3em] font-bold pl-11">TAP TO COPY EMAIL</span>
+                
+                <span className="text-[1.05rem] font-medium tracking-tight">
+                  favazkoppath@gmail.com
+                </span>
+                
+                {/* Yellow Loading Line */}
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover/mail:w-full transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] bg-gradient-to-r from-orange-400 to-amber-300 rounded-full" />
               </div>
-              <button className="w-full bg-white text-black py-4 rounded-2xl text-[11px] uppercase tracking-[0.2em] font-black hover:bg-white/90 transition-all flex items-center justify-center gap-2">
-                CONNECT NOW <ArrowUpRight size={12} />
-              </button>
-            </div>
-          </motion.div>
 
-        </div>
-      </div>
+              <div className="pl-11 h-[14px] flex items-center">
+                {copied ? (
+                  <motion.span 
+                    initial={{ opacity: 0, y: 2 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-[7.5px] text-[#00ff66] uppercase tracking-[0.3em] font-bold flex items-center gap-1.5"
+                  >
+                    <span className="text-[9px]">✓</span> COPIED TO CLIPBOARD
+                  </motion.span>
+                ) : (
+                  <span className="text-[7.5px] text-white/20 uppercase tracking-[0.3em] font-bold group-hover/mail:text-white/40 transition-colors duration-300">
+                    TAP TO COPY EMAIL
+                  </span>
+                )}
+              </div>
+            </motion.div>
+            
+            <a 
+              href="mailto:favazkoppath@gmail.com"
+              className="group/btn w-full bg-white text-black py-[14px] rounded-2xl text-[10.5px] uppercase tracking-[0.22em] font-black hover:bg-[#f0f0f0] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 mt-2 shadow-[0_0_0_rgba(255,255,255,0)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+            >
+              CONNECT NOW 
+              <ArrowUpRight size={11} className="transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+            </a>
+          </div>
+        </motion.div>
+
+      </motion.div>
     </section>
   );
 }

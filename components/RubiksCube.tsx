@@ -163,13 +163,13 @@ export function RubiksCube() {
           toneMapping: THREE.ACESFilmicToneMapping,
           powerPreference: "high-performance",
           stencil: false,
-          depth: true,
-          preserveDrawingBuffer: true
+          depth: true
         }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
         }}
         className="relative z-10"
+        style={{ background: 'transparent' }}
       >
         <ambientLight intensity={0.2} />
         <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={0.5} makeDefault />
